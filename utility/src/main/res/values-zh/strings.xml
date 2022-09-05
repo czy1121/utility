@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="format_time_ago_just">刚刚</string>
+    <string name="format_time_ago_seconds">%d秒前</string>
+    <string name="format_time_ago_minutes">%d分钟前</string>
+    <string name="format_time_ago_hours">%d小时前</string>
+    <string name="format_time_ago_days">%d天前</string>
+    <string name="format_time_ago_months">%d个月前</string>
+    <string name="format_time_ago_years">%d年前</string>
+</resources>
