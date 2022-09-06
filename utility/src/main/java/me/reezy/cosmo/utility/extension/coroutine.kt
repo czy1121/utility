@@ -1,4 +1,4 @@
-package me.reezy.cosmo.utility
+package me.reezy.cosmo.utility.extension
 
 import kotlinx.coroutines.*
 

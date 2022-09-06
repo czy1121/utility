@@ -1,7 +1,6 @@
-package me.reezy.cosmo.utility
+package me.reezy.cosmo.utility.extension
 
 import android.graphics.Bitmap
-import android.util.Log
 import java.io.ByteArrayOutputStream
 import kotlin.math.pow
 

@@ -1,30 +1,30 @@
-package me.reezy.cosmo.utility
+package me.reezy.cosmo.utility.context
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Build
 
 
-fun Context.meta(key: String): String? {
-    try {
-        return packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA).metaData.getString(key)
-    } catch (e: PackageManager.NameNotFoundException) {
-        e.printStackTrace()
-    }
-    return null
+
+
+// 判断指定包名的应用是否在系统分区
+fun Context.isPackageInSystemImage(pkgName: String = packageName) = pkgName.isNotBlank() && try {
+    packageManager.getApplicationInfo(pkgName, 0).flags and ApplicationInfo.FLAG_SYSTEM > 0
+} catch (e: PackageManager.NameNotFoundException) {
+    e.printStackTrace()
+    false
 }
 
-@Suppress("DEPRECATION")
-@SuppressLint("PackageManagerGetSignatures")
-fun Context.singerHashCode() = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES).signatures[0].hashCode()
+fun Context.isPackageInstalled(pkgName: String): Boolean {
+    return pkgName.isNotBlank() && packageManager.getLaunchIntentForPackage(pkgName) != null
+}
 
-
-fun Context.isPackageExist(pkgName: String = packageName): Boolean {
+fun Context.isPackageExist(pkgName: String): Boolean {
     try {
         return packageManager.getPackageInfo(pkgName, 0) != null
     } catch (e: PackageManager.NameNotFoundException) {
@@ -32,12 +32,6 @@ fun Context.isPackageExist(pkgName: String = packageName): Boolean {
     }
     return false
 }
-
-fun Context.isPackageInstalled(pkgName: String): Boolean {
-    if (pkgName.isBlank()) return false
-    return packageManager.getLaunchIntentForPackage(packageName) != null
-}
-
 
 fun Context.getPackageInfo(pkgName: String = packageName): PackageInfo? {
     try {
@@ -83,6 +77,11 @@ fun Context.getVersionCode(pkgName: String = packageName): Long {
     }
 }
 
+@Suppress("deprecation")
+@SuppressLint("PackageManagerGetSignatures")
+fun Context.getSingerHashCode() = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES).signatures[0].hashCode()
+
+
 fun Context.getApplicationLabel(pkgName: String = packageName): String? {
     try {
         val pi = packageManager.getPackageInfo(pkgName, PackageManager.GET_CONFIGURATIONS)
@@ -100,17 +99,6 @@ fun Context.getApplicationIcon(pkgName: String = packageName): Drawable? {
         e.printStackTrace()
     }
     return null
-}
-
-
-// ========== intent ==========
-
-fun Context.isIntentAvailable(action: String, uri: Uri? = null, mimeType: String? = null): Boolean {
-    val intent = Intent(action, uri)
-    if (mimeType != null) {
-        intent.type = mimeType
-    }
-    return packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).isNotEmpty()
 }
 
 fun Context.isIntentAvailable(intent: Intent): Boolean {

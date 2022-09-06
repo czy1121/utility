@@ -1,6 +1,6 @@
 # utility
 
-各种工具函数：pm,context,toast,dimen,file,format,random...
+各种工具函数：context,toast,dimen,file,format,random...
 
 ## Gradle
 
