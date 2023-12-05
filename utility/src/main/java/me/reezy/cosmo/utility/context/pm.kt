@@ -10,32 +10,22 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 
 
-
-
 // 判断指定包名的应用是否在系统分区
-fun Context.isPackageInSystemImage(pkgName: String = packageName) = pkgName.isNotBlank() && try {
+fun Context.isPackageInSystemImage(pkgName: String = packageName) = kotlin.runCatching {
     packageManager.getApplicationInfo(pkgName, 0).flags and ApplicationInfo.FLAG_SYSTEM > 0
-} catch (e: PackageManager.NameNotFoundException) {
-    e.printStackTrace()
-    false
-}
+}.getOrDefault(false)
 
 fun Context.isPackageInstalled(pkgName: String): Boolean {
     return pkgName.isNotBlank() && packageManager.getLaunchIntentForPackage(pkgName) != null
 }
 
 fun Context.isPackageExist(pkgName: String): Boolean {
-    try {
-        return packageManager.getPackageInfo(pkgName, 0) != null
-    } catch (e: PackageManager.NameNotFoundException) {
-        e.printStackTrace()
-    }
-    return false
+    return getPackageInfo(pkgName) != null
 }
 
 fun Context.getPackageInfo(pkgName: String = packageName): PackageInfo? {
     try {
-        return packageManager.getPackageInfo(pkgName, 0)
+        return packageManager.info(pkgName, 0)
     } catch (e: PackageManager.NameNotFoundException) {
         e.printStackTrace()
     }
@@ -50,13 +40,7 @@ fun Context.getPackageInfo(pkgName: String = packageName): PackageInfo? {
  * @return App版本号 ""表示失败
  */
 fun Context.getVersionName(pkgName: String = packageName): String {
-    if (pkgName.isBlank()) return ""
-    return try {
-        packageManager.getPackageInfo(pkgName, 0).versionName
-    } catch (e: PackageManager.NameNotFoundException) {
-        e.printStackTrace()
-        ""
-    }
+    return kotlin.runCatching { packageManager.info(pkgName, 0).versionName }.getOrDefault("")
 }
 
 /**
@@ -65,11 +49,10 @@ fun Context.getVersionName(pkgName: String = packageName): String {
  * @param pkgName 包名
  * @return App版本码 -1表示失败
  */
-@Suppress("deprecation")
 fun Context.getVersionCode(pkgName: String = packageName): Long {
     if (pkgName.isBlank()) return -1
     return try {
-        val info = packageManager.getPackageInfo(pkgName, 0)
+        val info = packageManager.info(pkgName, 0)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) info.longVersionCode else info.versionCode.toLong()
     } catch (e: PackageManager.NameNotFoundException) {
         e.printStackTrace()
@@ -77,20 +60,20 @@ fun Context.getVersionCode(pkgName: String = packageName): Long {
     }
 }
 
-@Suppress("deprecation")
 @SuppressLint("PackageManagerGetSignatures")
-fun Context.getSingerHashCode() = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES).signatures[0].hashCode()
+fun Context.getSingerHashCode() = packageManager.info(packageName, PackageManager.GET_SIGNATURES).signatures[0].hashCode()
 
 
 fun Context.getApplicationLabel(pkgName: String = packageName): String? {
     try {
-        val pi = packageManager.getPackageInfo(pkgName, PackageManager.GET_CONFIGURATIONS)
+        val pi = packageManager.info(pkgName, PackageManager.GET_CONFIGURATIONS)
         return packageManager.getApplicationLabel(pi.applicationInfo).toString()
     } catch (e: PackageManager.NameNotFoundException) {
         e.printStackTrace()
     }
     return null
 }
+
 
 fun Context.getApplicationIcon(pkgName: String = packageName): Drawable? {
     try {
@@ -103,4 +86,14 @@ fun Context.getApplicationIcon(pkgName: String = packageName): Drawable? {
 
 fun Context.isIntentAvailable(intent: Intent): Boolean {
     return packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).isNotEmpty()
+}
+
+
+private fun PackageManager.info(pkgName: String, flags: Int): PackageInfo {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getPackageInfo(pkgName, PackageManager.PackageInfoFlags.of(flags.toLong()))
+    } else {
+        @Suppress("DEPRECATION")
+        getPackageInfo(pkgName, flags)
+    }
 }

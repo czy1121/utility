@@ -7,13 +7,11 @@ import java.net.URLConnection
 import java.text.DecimalFormat
 
 
-
-
 fun AssetManager.readText(filename: String): String? {
     try {
         return String(open(filename).readBytes())
-    } catch (e: FileNotFoundException) {
-    } catch (e: IOException) {
+    } catch (_: FileNotFoundException) {
+    } catch (_: IOException) {
     }
     return null
 }
@@ -21,11 +19,12 @@ fun AssetManager.readText(filename: String): String? {
 fun Context.readText(filename: String): String? {
     try {
         return String(openFileInput(filename).readBytes())
-    } catch (e: FileNotFoundException) {
-    } catch (e: IOException) {
+    } catch (_: FileNotFoundException) {
+    } catch (_: IOException) {
     }
     return null
 }
+
 fun Context.writeText(filename: String, text: String) {
     writeBytes(filename, text.toByteArray())
 }
@@ -43,22 +42,18 @@ fun Context.writeBytes(filename: String, bytes: ByteArray, retry: Boolean = true
 
 }
 
-/**
- * 获取文件 MimeType
- */
+/** 获取文件 MimeType */
 fun File.mimeType(): String = inputStream().buffered().use {
     return URLConnection.guessContentTypeFromStream(it)
 }
 
-/**
- * 清空目录
- */
+/** 清空目录 */
 fun File.clean() {
     if (!exists() || !isDirectory) {
         return
     }
     listFiles()?.forEach {
-        if(it.isDirectory) {
+        if (it.isDirectory) {
             it.clean()
         } else {
             it.delete()
@@ -70,12 +65,12 @@ fun File.clean() {
 fun File.size(): Long {
     if (isFile) return length()
 
-    try {
-        listFiles()?.sumOf { if (it.isDirectory) size() else length() }
+    return try {
+        listFiles()?.sumOf { if (it.isDirectory) it.size() else length() } ?: 0
     } catch (e: Exception) {
         e.printStackTrace()
+        0
     }
-    return 0
 }
 
 

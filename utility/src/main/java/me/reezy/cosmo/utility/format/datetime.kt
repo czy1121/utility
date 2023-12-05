@@ -1,4 +1,3 @@
-
 @file:Suppress("NOTHING_TO_INLINE")
 
 package me.reezy.cosmo.utility.format
@@ -22,6 +21,7 @@ fun Date.format(pattern: String, timezone: TimeZone = TIMEZONE_D): String = sync
     formatter.applyPattern(pattern)
     return formatter.format(this)
 }
+
 inline fun Date.formatDateTimeMs(timezone: TimeZone = TIMEZONE_D): String = format("yyyy-MM-dd HH:mm:ss.SSS", timezone)
 inline fun Date.formatDateTime(timezone: TimeZone = TIMEZONE_D): String = format("yyyy-MM-dd HH:mm:ss", timezone)
 inline fun Date.formatDate(timezone: TimeZone = TIMEZONE_D): String = format("yyyy-MM-dd", timezone)
@@ -50,16 +50,17 @@ const val MS_YEAR = 365 * MS_DAY
 
 fun Long.formatCountdown(pattern: String = "HH:mm:ss") = Date(this).format(pattern, TIMEZONE_0)
 
+
 /**
- *
- * 半分钟内，显示刚刚
- * 一分钟内，显示xx秒前
- * 一小时内，显示xx分钟前
- * 一天内，显示xx小时前
- * 一月内，显示xx天前
+ * ```
+ * 半分钟内，显示 刚刚
+ * 一分钟内，显示 xx秒前
+ * 一小时内，显示 xx分钟前
+ * 一天内，显示 xx小时前
+ * 一月内，显示 xx天前
  * 其余，显示 2019-05-05 11:11
- *
- * */
+ * ```
+ */
 fun Long.formatTimeAgo(context: Context, years: Boolean = true): String {
     val resources = context.resources
     val span = System.currentTimeMillis() - this
@@ -76,13 +77,19 @@ fun Long.formatTimeAgo(context: Context, years: Boolean = true): String {
 }
 
 /**
- * 上午 9:11, 下午 4:22
- * 昨天 上午 9:11, 昨天 下午 4:22
- * 周三 上午 9:11, 周三 下午 4:22
- * 5月21日 上午 9:11, 5月21日 下午 4:22
- * 2018年5月21日 上午 9:11, 2018年5月21日 下午 4:22
- *
- * */
+ * ```
+ * 上午 9:11
+ * 下午 4:22
+ * 昨天 上午 9:11
+ * 昨天 下午 4:22
+ * 周三 上午 9:11
+ * 周三 下午 4:22
+ * 5月21日 上午 9:11
+ * 5月21日 下午 4:22
+ * 2018年5月21日 上午 9:11
+ * 2018年5月21日 下午 4:22
+ * ```
+ */
 fun Long.formatTimeChat(): String {
     val c = Calendar.getInstance()
     c.timeInMillis = this
@@ -96,4 +103,31 @@ fun Long.formatTimeChat(): String {
         c1[Calendar.YEAR] == c[Calendar.YEAR] -> Date(this).format("M月d日 aH:m")
         else -> Date(this).format("yyyy年M月d日 aH:m")
     }
+}
+
+
+/**
+ * ```
+ * [d天][h小时][m分钟][s秒]
+ *
+ * 30秒
+ * 23分钟48秒
+ * 2小时10秒
+ * 1小时40分钟25秒
+ * 1天5秒
+ * 1天10分钟5秒
+ * 1天20小时
+ * 1天20小时10分钟5秒
+ * ```
+ */
+fun Long.formatTimeSeconds(): String {
+    return formatTimeSecondsPart(1) + formatTimeSecondsPart(2) + formatTimeSecondsPart(3) + formatTimeSecondsPart( 4)
+}
+
+private fun Long.formatTimeSecondsPart(part: Int): String = when (part) {
+    1 -> if (this >= 86400) "${this / 86400}天" else ""
+    2 -> if (this >= 3600) "${this % 86400 / 3600}小时" else ""
+    3 -> if (this >= 60) "${this % 3600 / 60}分钟" else ""
+    4 -> "${this % 60}秒"
+    else -> ""
 }

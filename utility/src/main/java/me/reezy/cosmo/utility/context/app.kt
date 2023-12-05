@@ -1,5 +1,3 @@
-@file:Suppress("UNCHECKED_CAST")
-
 package me.reezy.cosmo.utility.context
 
 import android.app.ActivityManager
@@ -55,13 +53,9 @@ fun Context.isForegroundApp(pkgName: String = packageName): Boolean {
 
 
 // 退出当前应用
-@RequiresPermission(value = "android.permission.KILL_BACKGROUND_PROCESSES")
 fun Context.exitApp() {
-    ContextCompat.getSystemService(this, ActivityManager::class.java)?.apply {
-        appTasks.forEach {
-            it.finishAndRemoveTask()
-        }
-        killBackgroundProcesses(packageName)
+    ContextCompat.getSystemService(this, ActivityManager::class.java)?.appTasks?.forEach {
+        it.finishAndRemoveTask()
     }
     exitProcess(0)
 }

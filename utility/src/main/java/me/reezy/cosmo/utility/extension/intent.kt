@@ -7,15 +7,19 @@ import android.os.Build
 import androidx.core.content.FileProvider
 import java.io.File
 
+
+
 fun Intent.setGrantFile(context: Context, type: String, file: File, authority: String = "${context.packageName}.fileprovider", writeEnable: Boolean = false): Intent {
-    if (Build.VERSION.SDK_INT >= 24) {
-        setDataAndType(FileProvider.getUriForFile(context, authority, file), type)
+    val uri = if (Build.VERSION.SDK_INT >= 24) {
         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         if (writeEnable) {
             addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
         }
+        FileProvider.getUriForFile(context, authority, file)
     } else {
-        setDataAndType(Uri.fromFile(file), type)
+        Uri.fromFile(file)
     }
+    setDataAndType(uri, type)
+    putExtra(Intent.EXTRA_STREAM, uri)
     return this
 }

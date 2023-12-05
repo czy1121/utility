@@ -1,29 +1,30 @@
 package me.reezy.cosmo.utility.extension
 
+import android.annotation.SuppressLint
+import android.widget.TextView
 import kotlinx.coroutines.*
 
 
-fun CoroutineScope.countdown(countdown: Long, onTick: (Long) -> Unit = {}, onDone: () -> Unit) {
-    launch(Dispatchers.Default) {
-        (countdown downTo 1).forEach {
-            withContext(Dispatchers.Main) {
-                onTick(it)
-            }
-            delay(1000)
-        }
+fun CoroutineScope.countdown(countdown: Long, onTick: (Long) -> Unit = {}, onDone: () -> Unit) = launch(Dispatchers.Default) {
+    (countdown downTo 1).forEach {
         withContext(Dispatchers.Main) {
-            onDone()
+            onTick(it)
         }
+        delay(1000)
+    }
+    withContext(Dispatchers.Main) {
+        onDone()
     }
 }
 
-//@SuppressLint("SetTextI18n")
-//fun CoroutineScope.countdown(view: TextView, time: Long = 60) {
-//    view.isEnabled = false
-//    countdown(time, onTick = {
-//        view.text = "${it}s"
-//    }) {
-//        view.isEnabled = true
-//        view.text = "重新获取"
-//    }
-//}
+@SuppressLint("SetTextI18n")
+fun CoroutineScope.countdown(view: TextView, time: Long = 60, suffixText: String = "s"): Job {
+    val doneText = view.text
+    view.isEnabled = false
+    return countdown(time, onTick = {
+        view.text = "$it$suffixText"
+    }) {
+        view.isEnabled = true
+        view.text = doneText
+    }
+}
