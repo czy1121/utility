@@ -16,24 +16,24 @@ import kotlin.math.roundToInt
 
 inline val Int.dp get() = Resources.getSystem().dp(this).toInt()
 inline val Int.sp get() = Resources.getSystem().sp(this).toInt()
-inline val Number.dp get() = Resources.getSystem().dp(this)
-inline val Number.sp get() = Resources.getSystem().sp(this)
+inline val Float.dp get() = Resources.getSystem().dp(this)
+inline val Float.sp get() = Resources.getSystem().sp(this)
 
 
 inline fun Context.dp(value: Int) = resources.dp(value).toInt()
 inline fun Context.sp(value: Int) = resources.sp(value).toInt()
-inline fun Context.dp(value: Number) = resources.dp(value)
-inline fun Context.sp(value: Number) = resources.sp(value)
+inline fun Context.dp(value: Float) = resources.dp(value)
+inline fun Context.sp(value: Float) = resources.sp(value)
 
 inline fun Fragment.dp(value: Int) = resources.dp(value).toInt()
 inline fun Fragment.sp(value: Int) = resources.sp(value).toInt()
-inline fun Fragment.dp(value: Number) = resources.dp(value)
-inline fun Fragment.sp(value: Number) = resources.sp(value)
+inline fun Fragment.dp(value: Float) = resources.dp(value)
+inline fun Fragment.sp(value: Float) = resources.sp(value)
 
 inline fun View.dp(value: Int) = resources.dp(value).toInt()
 inline fun View.sp(value: Int) = resources.sp(value).toInt()
-inline fun View.dp(value: Number) = resources.dp(value)
-inline fun View.sp(value: Number) = resources.sp(value)
+inline fun View.dp(value: Float) = resources.dp(value)
+inline fun View.sp(value: Float) = resources.sp(value)
 
 
 // ========== px2dp/px2sp ==========

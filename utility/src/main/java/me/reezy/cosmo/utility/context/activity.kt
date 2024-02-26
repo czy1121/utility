@@ -5,14 +5,22 @@ import android.content.Context
 import android.content.ContextWrapper
 import androidx.activity.ComponentActivity
 
-fun Context.resolveComponentActivity(): ComponentActivity? = resolveActivity(ComponentActivity::class.java)
 
 @Suppress("UNCHECKED_CAST")
-fun <T : Activity> Context.resolveActivity(clazz: Class<T>): T? {
-    var obj: Context? = this
-    do {
-        if (clazz.isInstance(obj)) return obj as T
-        obj = if (obj is ContextWrapper) obj.baseContext else null
-    } while (obj != null)
-    return obj
+fun <T : Activity> Context.resolveActivity(clazz: Class<T>): T? = when {
+    clazz.isInstance(this) -> this as? T
+    this is ContextWrapper -> baseContext.resolveActivity(clazz)
+    else -> null
+}
+
+fun Context.resolveComponentActivity(): ComponentActivity? = when (this) {
+    is ComponentActivity -> this
+    is ContextWrapper -> baseContext.resolveComponentActivity()
+    else -> null
+}
+
+fun Context.resolveActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.resolveActivity()
+    else -> null
 }

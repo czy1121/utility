@@ -37,17 +37,17 @@ fun Context.getPackageInfo(pkgName: String = packageName): PackageInfo? {
  * 获取应用的版本名称
  *
  * @param pkgName 包名
- * @return App版本号 ""表示失败
+ * @return 应用版本名称 ""表示失败
  */
 fun Context.getVersionName(pkgName: String = packageName): String {
     return kotlin.runCatching { packageManager.info(pkgName, 0).versionName }.getOrDefault("")
 }
 
 /**
- * 获取App版本码
+ * 获取应用的版本号
  *
  * @param pkgName 包名
- * @return App版本码 -1表示失败
+ * @return 应用的版本号 -1表示失败
  */
 fun Context.getVersionCode(pkgName: String = packageName): Long {
     if (pkgName.isBlank()) return -1
