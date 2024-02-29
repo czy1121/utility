@@ -62,6 +62,7 @@ fun File.clean() {
 }
 
 
+/** 计算目录或文件大小 */
 fun File.size(): Long {
     if (isFile) return length()
 

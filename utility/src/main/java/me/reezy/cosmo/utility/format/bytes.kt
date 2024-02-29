@@ -1,6 +1,10 @@
 package me.reezy.cosmo.utility.format
 
+import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.TimeZone
 
 
 private const val BYTES_KB: Long = 1024
@@ -14,9 +18,30 @@ private const val BYTES_10GB: Long = 10737418240
 private const val BYTES_100GB: Long = 107374182400
 
 private fun size(formatter: String, bytes: Double, unit: String): String {
-    return DecimalFormat(formatter).format(bytes) + unit
+    val formatter = DecimalFormat(formatter)
+    formatter.roundingMode = RoundingMode.DOWN
+    return formatter.format(bytes) + unit
 }
 
+/**
+ * 格式化字节数
+ *
+ * compact = true
+ * ```
+ * 123GB, 12.3GB, 1.23GB
+ * 123MB, 12.3MB, 1.23MB
+ * 123KB, 12.3KB, 1.23KB
+ * 123B, 12B, 1B
+ * ```
+ *
+ * compact = false 总是保留最多2位小数
+ * ```
+ * #.##GB
+ * #.##MB
+ * #.##KB
+ * #B
+ * ```
+ */
 fun Long.formatBytes(compact:Boolean = false): String = when(compact) {
     true -> when {
         this > BYTES_100GB -> "${this / BYTES_GB}GB"
