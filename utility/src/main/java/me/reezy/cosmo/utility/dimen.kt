@@ -12,14 +12,31 @@ import kotlin.math.roundToInt
 
 // ========== dp/sp ==========
 
-inline val Number.dp: Float get() = Resources.getSystem().dp(this)
-inline val Number.sp: Float get() = Resources.getSystem().sp(this)
-inline fun Context.dp(value: Number): Float = resources.dp(value)
-inline fun Context.sp(value: Number): Float = resources.sp(value)
-inline fun Fragment.dp(value: Number): Float = resources.dp(value)
-inline fun Fragment.sp(value: Number): Float = resources.sp(value)
-inline fun View.dp(value: Number): Float = resources.dp(value)
-inline fun View.sp(value: Number): Float = resources.sp(value)
+inline val Int.dp: Int get() = Resources.getSystem().dp(this)
+inline val Int.sp: Int get() = Resources.getSystem().sp(this)
+inline val Float.dp: Float get() = Resources.getSystem().dp(this)
+inline val Float.sp: Float get() = Resources.getSystem().sp(this)
+
+inline fun Context.dp(value: Int): Int = resources.dp(value)
+inline fun Context.sp(value: Int): Int = resources.sp(value)
+inline fun Context.dp(value: Float): Float = resources.dp(value)
+inline fun Context.sp(value: Float): Float = resources.sp(value)
+
+inline fun Fragment.dp(value: Int): Int = resources.dp(value)
+inline fun Fragment.sp(value: Int): Int = resources.sp(value)
+inline fun Fragment.dp(value: Float): Float = resources.dp(value)
+inline fun Fragment.sp(value: Float): Float = resources.sp(value)
+
+
+inline fun View.dp(value: Int): Int = resources.dp(value)
+inline fun View.sp(value: Int): Int = resources.sp(value)
+inline fun View.dp(value: Float): Float = resources.dp(value)
+inline fun View.sp(value: Float): Float = resources.sp(value)
+
+fun Resources.dp(value: Int): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value.toFloat(), displayMetrics).toInt()
+fun Resources.sp(value: Int): Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value.toFloat(), displayMetrics).toInt()
+fun Resources.dp(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, displayMetrics)
+fun Resources.sp(value: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, displayMetrics)
 
 
 // ========== px2dp/px2sp ==========
@@ -34,12 +51,6 @@ inline fun Fragment.px2sp(@Px px: Int) = resources.px2dp(px)
 inline fun View.px2dp(@Px px: Int) = resources.px2dp(px)
 inline fun View.px2sp(@Px px: Int) = resources.px2dp(px)
 
-
-// ========== dp/sp/px2dp/px2sp ==========
-
-
-fun Resources.dp(value: Number): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value.toFloat(), displayMetrics)
-fun Resources.sp(value: Number): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value.toFloat(), displayMetrics)
 fun Resources.px2dp(@Px px: Int): Float = px / displayMetrics.density
 fun Resources.px2sp(@Px px: Int): Float = px / displayMetrics.scaledDensity
 
