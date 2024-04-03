@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import androidx.activity.ComponentActivity
+import androidx.fragment.app.FragmentActivity
 
 
 @Suppress("UNCHECKED_CAST")
@@ -16,6 +17,12 @@ fun <T : Activity> Context.resolveActivity(clazz: Class<T>): T? = when {
 fun Context.resolveComponentActivity(): ComponentActivity? = when (this) {
     is ComponentActivity -> this
     is ContextWrapper -> baseContext.resolveComponentActivity()
+    else -> null
+}
+
+fun Context.resolveFragmentActivity(): FragmentActivity? = when (this) {
+    is FragmentActivity -> this
+    is ContextWrapper -> baseContext.resolveFragmentActivity()
     else -> null
 }
 

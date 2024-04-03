@@ -1,5 +1,6 @@
 package me.reezy.cosmo.utility
 
+import android.app.Dialog
 import android.content.Context
 import android.view.Gravity
 import android.view.View
@@ -22,17 +23,26 @@ fun Context.toast(resId: Int, duration: Int = Toast.LENGTH_SHORT, gravity: Int =
 
 
 /** Fragment */
-fun Fragment.toast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT, gravity: Int = Gravity.CENTER) {
+inline fun Fragment.toast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT, gravity: Int = Gravity.CENTER) {
     requireContext().toast(text, duration, gravity)
 }
-fun Fragment.toast(resId: Int, duration: Int = Toast.LENGTH_SHORT, gravity: Int = Gravity.CENTER) {
+inline fun Fragment.toast(resId: Int, duration: Int = Toast.LENGTH_SHORT, gravity: Int = Gravity.CENTER) {
     requireContext().toast(resId, duration, gravity)
 }
 
-/** View */
-fun View.toast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT, gravity: Int = Gravity.CENTER) {
+
+/** Dialog */
+inline fun Dialog.toast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT, gravity: Int = Gravity.CENTER) {
     context.toast(text, duration, gravity)
 }
-fun View.toast(resId: Int, duration: Int = Toast.LENGTH_SHORT, gravity: Int = Gravity.CENTER) {
+inline fun Dialog.toast(resId: Int, duration: Int = Toast.LENGTH_SHORT, gravity: Int = Gravity.CENTER) {
+    context.toast(resId, duration, gravity)
+}
+
+/** View */
+inline fun View.toast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT, gravity: Int = Gravity.CENTER) {
+    context.toast(text, duration, gravity)
+}
+inline fun View.toast(resId: Int, duration: Int = Toast.LENGTH_SHORT, gravity: Int = Gravity.CENTER) {
     context.toast(resId, duration, gravity)
 }

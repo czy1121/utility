@@ -2,6 +2,7 @@
 
 package me.reezy.cosmo.utility
 
+import android.app.Dialog
 import android.content.Context
 import android.content.res.Resources
 import android.util.TypedValue
@@ -27,6 +28,10 @@ inline fun Fragment.sp(value: Int): Int = resources.sp(value)
 inline fun Fragment.dp(value: Float): Float = resources.dp(value)
 inline fun Fragment.sp(value: Float): Float = resources.sp(value)
 
+inline fun Dialog.dp(value: Int): Int = context.resources.dp(value)
+inline fun Dialog.sp(value: Int): Int = context.resources.sp(value)
+inline fun Dialog.dp(value: Float): Float = context.resources.dp(value)
+inline fun Dialog.sp(value: Float): Float = context.resources.sp(value)
 
 inline fun View.dp(value: Int): Int = resources.dp(value)
 inline fun View.sp(value: Int): Int = resources.sp(value)
@@ -48,11 +53,15 @@ inline fun Context.px2sp(@Px px: Int) = resources.px2dp(px)
 inline fun Fragment.px2dp(@Px px: Int) = resources.px2dp(px)
 inline fun Fragment.px2sp(@Px px: Int) = resources.px2dp(px)
 
+inline fun Dialog.px2dp(@Px px: Int) = context.resources.px2dp(px)
+inline fun Dialog.px2sp(@Px px: Int) = context.resources.px2dp(px)
+
 inline fun View.px2dp(@Px px: Int) = resources.px2dp(px)
 inline fun View.px2sp(@Px px: Int) = resources.px2dp(px)
 
 fun Resources.px2dp(@Px px: Int): Float = px / displayMetrics.density
 fun Resources.px2sp(@Px px: Int): Float = px / displayMetrics.scaledDensity
+
 
 
 
