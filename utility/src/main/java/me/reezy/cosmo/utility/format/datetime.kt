@@ -48,7 +48,11 @@ const val MS_MONTH = 30 * MS_DAY
 const val MS_YEAR = 365 * MS_DAY
 
 
-fun Long.formatCountdown(pattern: String = "HH:mm:ss") = Date(this).format(pattern, TIMEZONE_0)
+fun Long.formatCountdown(pattern: String = "HH:mm:ss"): String {
+    val days = this / MS_DAY
+    val time = this % MS_DAY
+    return Date(time).format(pattern.replace("dd", days.toString()), TIMEZONE_0)
+}
 
 
 /**
@@ -121,7 +125,7 @@ fun Long.formatTimeChat(): String {
  * ```
  */
 fun Long.formatTimeSeconds(): String {
-    return formatTimeSecondsPart(1) + formatTimeSecondsPart(2) + formatTimeSecondsPart(3) + formatTimeSecondsPart( 4)
+    return formatTimeSecondsPart(1) + formatTimeSecondsPart(2) + formatTimeSecondsPart(3) + formatTimeSecondsPart(4)
 }
 
 private fun Long.formatTimeSecondsPart(part: Int): String = when (part) {

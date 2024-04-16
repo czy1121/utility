@@ -23,6 +23,11 @@ val WindowManager.windowWidth: Int get() =  when {
 inline val View.windowHeight: Int get() = context.getSystemService(WindowManager::class.java).windowHeight
 inline val View.windowWidth: Int get() = context.getSystemService(WindowManager::class.java).windowWidth
 
+val View.statusBarInset: Int get() = ViewCompat.getRootWindowInsets(this)?.getInsets(WindowInsetsCompat.Type.statusBars())?.top ?: 0
+
+val View.navigationBarInset: Int get() = ViewCompat.getRootWindowInsets(this)?.getInsets(WindowInsetsCompat.Type.statusBars())?.bottom ?: 0
+
+
 val View.statusBarHeight: Int get() = ViewCompat.getRootWindowInsets(this)?.getInsets(WindowInsetsCompat.Type.statusBars())?.top ?: context.dimen("status_bar_height")
 
 val View.navigationBarHeight: Int get() = ViewCompat.getRootWindowInsets(this)?.getInsets(WindowInsetsCompat.Type.navigationBars())?.bottom  ?: context.dimen("navigation_bar_height")
