@@ -13,9 +13,9 @@ import android.view.ViewOutlineProvider
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.ancestors
-import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import me.reezy.cosmo.R
+import me.reezy.cosmo.utility.context.navigationBarHeight
 import me.reezy.cosmo.utility.context.resolveActivity
 import me.reezy.cosmo.utility.context.statusBarHeight
 
@@ -75,35 +75,46 @@ fun View.hideSoftInputOnTouchOutside(views: Array<View>) {
     }
 }
 
+/**
+ * 更新视图的边距
+ * */
 inline fun View.updateMargin(left: Int? = null, top: Int? = null, right: Int? = null, bottom: Int? = null) {
-    updateLayoutParams<ViewGroup.MarginLayoutParams> {
+    val params = layoutParams
+    if (params is MarginLayoutParams) {
         left?.let {
-            leftMargin = it
+            params.leftMargin = it
         }
         top?.let {
-            topMargin = it
+            params.topMargin = it
         }
         right?.let {
-            rightMargin = it
+            params.rightMargin = it
         }
         bottom?.let {
-            bottomMargin = it
+            params.bottomMargin = it
         }
+        layoutParams = params
     }
 }
 
+/**
+ * 更新视图的宽高
+ * */
 inline fun View.updateLayout(width: Int? = null, height: Int? = null) {
-    updateLayoutParams<ViewGroup.LayoutParams> {
-        width?.let {
-            this.width = it
-        }
-        height?.let {
-            this.height = it
-        }
+    val params = layoutParams
+    width?.let {
+        params.width = it
     }
+    height?.let {
+        params.height = it
+    }
+    layoutParams = params
 }
 
-// 适配状态栏
+
+/**
+ * 适配状态栏
+ * */
 fun View.fitsStatusBar(useMargin: Boolean = false) {
     val barHeight = statusBarHeight
     when {
@@ -113,12 +124,38 @@ fun View.fitsStatusBar(useMargin: Boolean = false) {
                 updateMargin(top = lp.topMargin + barHeight)
             }
         }
+
         layoutParams.height < 0 -> {
             updatePadding(top = paddingTop + barHeight)
         }
+
         else -> {
             updateLayout(height = layoutParams.height + barHeight)
             updatePadding(top = paddingTop + barHeight)
+        }
+    }
+}
+
+/**
+ * 适配导航栏
+ * */
+fun View.fitsNavigationBar(useMargin: Boolean = false) {
+    val barHeight = navigationBarHeight
+    when {
+        useMargin -> {
+            val lp = layoutParams
+            if (lp is MarginLayoutParams) {
+                updateMargin(bottom = lp.bottomMargin + barHeight)
+            }
+        }
+
+        layoutParams.height < 0 -> {
+            updatePadding(bottom = paddingBottom + barHeight)
+        }
+
+        else -> {
+            updateLayout(height = layoutParams.height + barHeight)
+            updatePadding(bottom = paddingBottom + barHeight)
         }
     }
 }

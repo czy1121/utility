@@ -25,7 +25,7 @@ inline val View.windowWidth: Int get() = context.getSystemService(WindowManager:
 
 val View.statusBarInset: Int get() = ViewCompat.getRootWindowInsets(this)?.getInsets(WindowInsetsCompat.Type.statusBars())?.top ?: 0
 
-val View.navigationBarInset: Int get() = ViewCompat.getRootWindowInsets(this)?.getInsets(WindowInsetsCompat.Type.statusBars())?.bottom ?: 0
+val View.navigationBarInset: Int get() = ViewCompat.getRootWindowInsets(this)?.getInsets(WindowInsetsCompat.Type.navigationBars())?.bottom ?: 0
 
 
 val View.statusBarHeight: Int get() = ViewCompat.getRootWindowInsets(this)?.getInsets(WindowInsetsCompat.Type.statusBars())?.top ?: context.dimen("status_bar_height")

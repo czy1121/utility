@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.withStateAtLeast
 import kotlinx.coroutines.*
 
 
@@ -33,11 +34,7 @@ fun CoroutineScope.countdown(view: TextView, time: Long = 60, suffixText: String
     }
 }
 
-fun LifecycleOwner.loop(
-    state: Lifecycle.State = Lifecycle.State.RESUMED,
-    interval: Long = 1000,
-    action: suspend () -> Unit
-) = lifecycleScope.launch {
+fun LifecycleOwner.loop(state: Lifecycle.State = Lifecycle.State.RESUMED, interval: Long = 1000, action: suspend () -> Unit) = lifecycleScope.launch {
     repeatOnLifecycle(state) {
         while (true) {
             try {
@@ -47,5 +44,11 @@ fun LifecycleOwner.loop(
             }
             delay(interval)
         }
+    }
+}
+
+fun LifecycleOwner.launchWithState(state: Lifecycle.State, block: suspend CoroutineScope.() -> Unit) = lifecycleScope.launch {
+    lifecycle.withStateAtLeast(state) {
+        launch(block = block)
     }
 }
