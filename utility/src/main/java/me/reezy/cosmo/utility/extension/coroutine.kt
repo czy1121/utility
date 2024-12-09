@@ -47,7 +47,7 @@ fun LifecycleOwner.loop(state: Lifecycle.State = Lifecycle.State.RESUMED, interv
     }
 }
 
-fun LifecycleOwner.launchWithState(state: Lifecycle.State, block: suspend CoroutineScope.() -> Unit) = lifecycleScope.launch {
+fun LifecycleOwner.launch(state: Lifecycle.State = Lifecycle.State.RESUMED, block: suspend CoroutineScope.() -> Unit) = lifecycleScope.launch {
     lifecycle.withStateAtLeast(state) {
         launch(block = block)
     }

@@ -17,8 +17,8 @@ private const val BYTES_GB: Long = 1073741824
 private const val BYTES_10GB: Long = 10737418240
 private const val BYTES_100GB: Long = 107374182400
 
-private fun size(formatter: String, bytes: Double, unit: String): String {
-    val formatter = DecimalFormat(formatter)
+private fun size(format: String, bytes: Double, unit: String): String {
+    val formatter = DecimalFormat(format)
     formatter.roundingMode = RoundingMode.DOWN
     return formatter.format(bytes) + unit
 }
