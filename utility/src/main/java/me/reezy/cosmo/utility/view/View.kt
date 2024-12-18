@@ -14,10 +14,18 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.ancestors
 import androidx.core.view.updatePadding
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import me.reezy.cosmo.R
 import me.reezy.cosmo.utility.context.navigationBarHeight
 import me.reezy.cosmo.utility.context.resolveActivity
+import me.reezy.cosmo.utility.context.resolveComponentActivity
 import me.reezy.cosmo.utility.context.statusBarHeight
+
+fun View.requireLifecycleOwner(): LifecycleOwner {
+    if (this is LifecycleOwner) return this
+    return findViewTreeLifecycleOwner() ?: context.resolveComponentActivity() ?: throw Exception("can not find LifecycleOwner")
+}
 
 fun View.throttleClick(throttleTime: Long = 1000, block: (View) -> Unit) {
     if (throttleTime < 1) {

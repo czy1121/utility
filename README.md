@@ -38,6 +38,14 @@ fun Context.sendText(toPackageName: String, message: String)
 fun Context.sendImage(toPackageName: String, image: File) 
 ```
 
+## ViewModel 
+
+```kotlin
+inline fun <reified VM : ViewModel> Context.activityViewModels(): Lazy<VM>
+inline fun <reified VM : ViewModel> View.activityViewModels(): Lazy<VM>
+inline fun <reified VM : ViewModel> Dialog.activityViewModels(): Lazy<VM>
+```
+
 ## 尺寸(dimen)
 
 `dp/sp` 转 `px` 工具函数
@@ -175,7 +183,7 @@ repositories {
     maven { url "https://gitee.com/ezy/repo/raw/cosmo/"}
 }
 dependencies {
-    implementation "me.reezy.cosmo:utility:0.9.0"
+    implementation "me.reezy.cosmo:utility:0.10.1"
 }
 ```
 
