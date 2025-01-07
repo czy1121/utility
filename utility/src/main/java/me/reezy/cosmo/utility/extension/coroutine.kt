@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.withResumed
 import androidx.lifecycle.withStateAtLeast
 import kotlinx.coroutines.*
 
@@ -47,8 +48,17 @@ fun LifecycleOwner.loop(state: Lifecycle.State = Lifecycle.State.RESUMED, interv
     }
 }
 
-fun LifecycleOwner.launch(state: Lifecycle.State = Lifecycle.State.RESUMED, block: suspend CoroutineScope.() -> Unit) = lifecycleScope.launch {
-    lifecycle.withStateAtLeast(state) {
-        launch(block = block)
-    }
+/**
+ * 在 [Lifecycle.State] 每次进入 [state] 时运行 [block]
+ * */
+fun LifecycleOwner.launchOn(state: Lifecycle.State = Lifecycle.State.RESUMED, block: suspend CoroutineScope.() -> Unit) = lifecycleScope.launch {
+    lifecycle.repeatOnLifecycle(state, block)
+}
+
+
+/**
+ * 在 [Lifecycle.State] 至少为 [state] 的时运行 [block]
+ * */
+fun LifecycleOwner.launchWith(state: Lifecycle.State = Lifecycle.State.RESUMED, block: () -> Unit) = lifecycleScope.launch {
+    lifecycle.withStateAtLeast(state, block)
 }
