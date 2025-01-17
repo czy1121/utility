@@ -1,10 +1,8 @@
-package me.reezy.cosmo.utility.context
+package me.reezy.cosmo.utility
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.util.Log
-import me.reezy.cosmo.utility.extension.compressCircularly
 import me.reezy.cosmo.utility.extension.setGrantFile
 import java.io.File
 

@@ -2,6 +2,7 @@
 
 package me.reezy.cosmo.utility.context
 
+import android.graphics.Color
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.fragment.app.Fragment
 
 val WindowManager.windowHeight: Int
     get() = when {
@@ -51,6 +53,17 @@ var Window.isNavigationBarLight: Boolean
     set(value) {
         WindowCompat.getInsetsController(this, decorView).isAppearanceLightNavigationBars = value
     }
+
+fun Window.setStatusBarOverlay() {
+    decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+    statusBarColor = Color.TRANSPARENT
+}
+
+@Suppress("NOTHING_TO_INLINE")
+inline fun Fragment.setStatusBarOverlay() {
+    requireActivity().window.setStatusBarOverlay()
+}
+
 
 fun Window.setLayoutInFullscreen(fullscreen: Boolean) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

@@ -67,7 +67,7 @@ fun File.size(): Long {
     if (isFile) return length()
 
     return try {
-        listFiles()?.sumOf { if (it.isDirectory) it.size() else length() } ?: 0
+        listFiles()?.sumOf { if (it.isDirectory) it.size() else it.length() } ?: 0
     } catch (e: Exception) {
         e.printStackTrace()
         0

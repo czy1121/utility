@@ -1,4 +1,4 @@
-package me.reezy.cosmo.utility.context
+package me.reezy.cosmo.utility
 
 import android.app.Dialog
 import android.content.Context
@@ -6,6 +6,7 @@ import android.view.View
 import androidx.annotation.MainThread
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelLazy
+import me.reezy.cosmo.utility.context.resolveComponentActivity
 
 
 @MainThread
