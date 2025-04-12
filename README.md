@@ -50,8 +50,7 @@ inline fun <reified VM : ViewModel> Dialog.activityViewModels(): Lazy<VM>
 
 `dp/sp` 转 `px` 工具函数
 
-```kotlin  
-
+```kotlin
 inline val Int.dp: Int get() = Resources.getSystem().dp(this)
 inline val Int.sp: Int get() = Resources.getSystem().sp(this)
 inline val Float.dp: Float get() = Resources.getSystem().dp(this)
@@ -67,6 +66,10 @@ inline fun Fragment.sp(value: Int): Int = resources.sp(value)
 inline fun Fragment.dp(value: Float): Float = resources.dp(value)
 inline fun Fragment.sp(value: Float): Float = resources.sp(value)
 
+inline fun Dialog.dp(value: Int): Int = context.resources.dp(value)
+inline fun Dialog.sp(value: Int): Int = context.resources.sp(value)
+inline fun Dialog.dp(value: Float): Float = context.resources.dp(value)
+inline fun Dialog.sp(value: Float): Float = context.resources.sp(value) 
 
 inline fun View.dp(value: Int): Int = resources.dp(value)
 inline fun View.sp(value: Int): Int = resources.sp(value)

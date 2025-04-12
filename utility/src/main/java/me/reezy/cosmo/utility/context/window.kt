@@ -93,3 +93,12 @@ fun Window.showSystemBars() {
 }
 
 
+fun Window.showSoftInput() {
+    WindowCompat.getInsetsController(this, decorView).show(WindowInsetsCompat.Type.ime())
+}
+
+fun Window.hideSoftInput() {
+    WindowCompat.getInsetsController(this, decorView).hide(WindowInsetsCompat.Type.ime())
+}
+
+

@@ -5,11 +5,14 @@ package me.reezy.cosmo.utility.view
 import android.annotation.SuppressLint
 import android.graphics.Outline
 import android.graphics.Rect
+import android.text.SpannableStringBuilder
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.ViewOutlineProvider
+import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.ancestors
@@ -22,10 +25,17 @@ import me.reezy.cosmo.utility.context.resolveActivity
 import me.reezy.cosmo.utility.context.resolveComponentActivity
 import me.reezy.cosmo.utility.context.statusBarHeight
 
+var TextView.html
+    get() = HtmlCompat.toHtml(SpannableStringBuilder(text), HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
+    set(value) {
+        text = HtmlCompat.fromHtml(value, HtmlCompat.FROM_HTML_MODE_COMPACT)
+    }
+
 fun View.requireLifecycleOwner(): LifecycleOwner {
     if (this is LifecycleOwner) return this
     return findViewTreeLifecycleOwner() ?: context.resolveComponentActivity() ?: throw Exception("can not find LifecycleOwner")
 }
+
 
 fun View.throttleClick(throttleTime: Long = 1000, block: (View) -> Unit) {
     if (throttleTime < 1) {
