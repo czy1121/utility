@@ -1,5 +1,6 @@
 package me.reezy.cosmo.utility
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -51,6 +52,7 @@ fun Context.sendImage(toPackageName: String, image: File) {
 
 
 
+@SuppressLint("QueryPermissionsNeeded")
 private fun resolve(context: Context, share: Intent, searchKey: String): String? {
     try {
         for (info in context.packageManager.queryIntentActivities(share, 0)) {

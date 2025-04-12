@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package me.reezy.cosmo.utility.context
 
 import android.annotation.SuppressLint

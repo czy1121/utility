@@ -10,8 +10,8 @@ import java.text.DecimalFormat
 fun AssetManager.readText(filename: String): String? {
     try {
         return String(open(filename).readBytes())
-    } catch (_: FileNotFoundException) {
-    } catch (_: IOException) {
+    } catch (e: IOException) {
+        e.printStackTrace()
     }
     return null
 }
@@ -19,8 +19,8 @@ fun AssetManager.readText(filename: String): String? {
 fun Context.readText(filename: String): String? {
     try {
         return String(openFileInput(filename).readBytes())
-    } catch (_: FileNotFoundException) {
-    } catch (_: IOException) {
+    } catch (e: IOException) {
+        e.printStackTrace()
     }
     return null
 }

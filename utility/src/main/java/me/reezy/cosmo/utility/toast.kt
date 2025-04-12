@@ -1,8 +1,9 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package me.reezy.cosmo.utility
 
 import android.app.Dialog
 import android.content.Context
-import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment

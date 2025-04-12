@@ -1,4 +1,4 @@
-package me.reezy.cosmo.utility
+package me.reezy.cosmo.utility.delegate
 
 import android.app.Dialog
 import android.content.Context

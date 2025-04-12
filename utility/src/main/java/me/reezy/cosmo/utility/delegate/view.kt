@@ -1,4 +1,4 @@
-package me.reezy.cosmo.utility.view
+package me.reezy.cosmo.utility.delegate
 
 
 import android.app.Activity

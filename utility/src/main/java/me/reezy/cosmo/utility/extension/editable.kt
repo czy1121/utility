@@ -1,9 +1,7 @@
-package me.reezy.cosmo.utility
+package me.reezy.cosmo.utility.extension
 
 import android.text.Editable
 import android.text.Spanned
-import kotlin.math.min
-import kotlin.math.max
 
 fun Editable.setText(text: String) {
     replace(0, length, text)
