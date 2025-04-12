@@ -7,25 +7,14 @@ fun Editable.setText(text: String) {
     replace(0, length, text)
 }
 
-fun Editable.setSpan(span: Any) {
+fun Editable.setStyle(span: Any) {
     setSpan(span, 0, length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
 }
 
-fun Editable.setLimit(min: Int, max: Int) {
-    if (isEmpty()) {
-        return
+fun Editable.updateNumber(min: Int, max: Int, delta: Int = 0) {
+    val value = toString()
+    val newValue = ((value.toIntOrNull() ?: 0) + delta).coerceIn(min, max).toString()
+    if (value != newValue) {
+        setText(newValue)
     }
-    val value = toString().toIntOrNull() ?: 0
-    if (value < min) {
-        setText(min.toString())
-    } else if (value > max) {
-        setText(max.toString())
-    }
-}
-
-fun Editable.add(delta: Int, min: Int, max: Int) {
-    if (delta == 0) return
-    val value = toString().toIntOrNull() ?: 0
-    val newValue = (value + delta).coerceIn(min, max)
-    setText(newValue.toString())
 }
