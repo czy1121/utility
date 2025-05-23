@@ -10,7 +10,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-fun LifecycleOwner.loop(state: Lifecycle.State = Lifecycle.State.RESUMED, interval: Long = 1000, block: suspend () -> Unit) = lifecycleScope.launch {
+/**
+ * 在 [Lifecycle.State] 每次进入 [state] 时开始循环，离开 [state] 时退出循环
+ * */
+fun LifecycleOwner.loopOn(state: Lifecycle.State = Lifecycle.State.RESUMED, interval: Long = 1000, block: suspend () -> Unit) = lifecycleScope.launch {
     repeatOnLifecycle(state) {
         while (true) {
             try {
@@ -32,7 +35,7 @@ fun LifecycleOwner.repeatOn(state: Lifecycle.State = Lifecycle.State.RESUMED, bl
 
 
 /**
- * 在 [Lifecycle.State] 至少为 [state] 的时运行 [block]
+ * 在 [Lifecycle.State] 至少为 [state] 时运行 [block]
  * */
 fun LifecycleOwner.launchWith(state: Lifecycle.State = Lifecycle.State.RESUMED, block: () -> Unit) = lifecycleScope.launch {
     lifecycle.withStateAtLeast(state, block)

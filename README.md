@@ -38,13 +38,40 @@ fun Context.sendText(toPackageName: String, message: String)
 fun Context.sendImage(toPackageName: String, image: File) 
 ```
 
-## ViewModel 
+## 委托属性
+
+视图查找
+
+```kotlin  
+fun <T : View> Activity.view(@IdRes id: Int): Lazy<T> = lazy { findViewById(id) }
+fun <T : View> Fragment.view(@IdRes id: Int): Lazy<T> = lazy { requireView().findViewById(id) }
+fun <T : View> Dialog.view(@IdRes id: Int): Lazy<T> = lazy { findViewById(id) }
+fun <T : View> View.view(@IdRes id: Int): Lazy<T> = lazy { findViewById(id) }
+```
+ 
+
+`androidx.activity.viewModels` 与 `androidx.fragment.app.viewModels` 获取到的是不同的 ViewModel 实例     
+
+使用 `activityViewModels` 可以方便的在 `Activity/Fragment/Dialog/View` 中获取 `ViewModel` 的同一实例以共享状态    
 
 ```kotlin
-inline fun <reified VM : ViewModel> Context.activityViewModels(): Lazy<VM>
-inline fun <reified VM : ViewModel> View.activityViewModels(): Lazy<VM>
+inline fun <reified VM : ViewModel> ComponentActivity.activityViewModels(): Lazy<VM>
 inline fun <reified VM : ViewModel> Dialog.activityViewModels(): Lazy<VM>
+inline fun <reified VM : ViewModel> View.activityViewModels(): Lazy<VM>
 ```
+
+用法
+
+```kotlin
+class SomeActivity: ComponentActivity {
+    val btnAction by view<TextView>(R.id.btn_action)
+     
+    val someVM by activityViewModels<SomeViewModel>()
+} 
+ 
+```
+
+
 
 ## 尺寸(dimen)
 

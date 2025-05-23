@@ -47,20 +47,8 @@ fun Resources.sp(value: Float): Float = TypedValue.applyDimension(TypedValue.COM
 // ========== px2dp/px2sp ==========
 
 
-inline fun Context.px2dp(@Px px: Int) = resources.px2dp(px)
-inline fun Context.px2sp(@Px px: Int) = resources.px2dp(px)
-
-inline fun Fragment.px2dp(@Px px: Int) = resources.px2dp(px)
-inline fun Fragment.px2sp(@Px px: Int) = resources.px2dp(px)
-
-inline fun Dialog.px2dp(@Px px: Int) = context.resources.px2dp(px)
-inline fun Dialog.px2sp(@Px px: Int) = context.resources.px2dp(px)
-
-inline fun View.px2dp(@Px px: Int) = resources.px2dp(px)
-inline fun View.px2sp(@Px px: Int) = resources.px2dp(px)
-
-fun Resources.px2dp(@Px px: Int): Float = px / displayMetrics.density
-fun Resources.px2sp(@Px px: Int): Float = px / displayMetrics.scaledDensity
+fun Context.px2dp(@Px px: Int): Float = px / resources.displayMetrics.density
+fun Context.px2sp(@Px px: Int): Float = px / resources.displayMetrics.scaledDensity
 
 
 
